@@ -5,7 +5,7 @@
 
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import electron, { type BrowserWindow as BrowserWindowType, type MenuItemConstructorOptions } from 'electron'
+import electron, { type BrowserWindow as BrowserWindowType, type NativeImage, type MenuItemConstructorOptions } from 'electron'
 import { DesktopService, type DesktopMenuItem } from '@deepseek-ai/dsh-desktop'
 import { loadLayeredEnv, runProfile } from '@deepseek-ai/dsh-app-boot'
 import type { Context } from '@deepseek-ai/cordis'
@@ -18,12 +18,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const INSTALL_ANCHOR = fileURLToPath(new URL('../package.json', import.meta.url))
 const SHIPPED_PRESET_ROOT = fileURLToPath(new URL('../../cli/config/agent-presets/', import.meta.url))
 const PRELOAD = join(__dirname, 'preload.js')
+const ICON = fileURLToPath(new URL('../assets/icon.png', import.meta.url))
 
 let mainWindow: BrowserWindowType | undefined
 let rootContext: Context | undefined
 let desktopService: DesktopService | undefined
 let quitting = false
 let smokeQuitScheduled = false
+let appIcon: NativeImage | undefined
 
 function toElectronMenuItem(item: DesktopMenuItem): MenuItemConstructorOptions {
   return {
@@ -112,6 +114,7 @@ function createMainWindow(url: string): BrowserWindowType {
     minWidth: 900,
     minHeight: 600,
     title: 'DeepSeek Harness',
+    ...(appIcon === undefined ? {} : { icon: appIcon }),
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 16, y: 16 },
     show: false,
@@ -169,9 +172,16 @@ async function bootDesktop(): Promise<void> {
   mainWindow = createMainWindow(`http://127.0.0.1:${String(webServer.port)}`)
 }
 
+function installAppIcon(): void {
+  appIcon = electron.nativeImage.createFromPath(ICON)
+  if (appIcon.isEmpty()) return
+  app.dock?.setIcon(appIcon)
+}
+
 app.name = 'DeepSeek Harness'
 
 app.whenReady().then(async () => {
+  installAppIcon()
   await bootDesktop()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0 && rootContext?.get('webServer') !== undefined) {
