@@ -28,6 +28,7 @@ const DESKTOP_STYLE = `
 <style id="dsh-desktop-style">
 body {
   --dsh-desktop-titlebar-height: 28px;
+  --dsh-desktop-traffic-light-safe-block: 34px;
 }
 body::before {
   content: "";
@@ -40,6 +41,9 @@ body::before {
 }
 #root {
   min-height: 100vh;
+}
+#root > * > :first-child > :first-child {
+  padding-top: var(--dsh-desktop-traffic-light-safe-block);
 }
 @media (min-width: 720px) {
   body {

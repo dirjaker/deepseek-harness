@@ -40,7 +40,9 @@ describe('desktop-app bundle glue', () => {
       'desktop.settings',
       'desktop.toggle-devtools',
     ])
-    expect(web.tap('<html><head></head></html>')).toContain('dsh-desktop-style')
+    const html = web.tap('<html><head></head></html>')
+    expect(html).toContain('dsh-desktop-style')
+    expect(html).toContain('--dsh-desktop-traffic-light-safe-block')
 
     desktop.emitMenuCommand(COMMAND_SETTINGS)
     desktop.emitMenuCommand(COMMAND_TOGGLE_DEVTOOLS)
