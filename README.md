@@ -1,6 +1,6 @@
 # DeepSeek Harness Desktop Fork
 
-[English](README.en.md) | 中文 | [兼容路径](README.zh.md)
+[English](README.en.md) | 中文 |
 
 本仓库是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的桌面端二开版本。官方项目由 [DeepSeek AI](https://deepseek.com) 开发，是一个开源 agent harness（智能体框架）；本 fork 保留官方 Web 与 CLI 基础，并加入 macOS Electron 桌面宿主和本地 unsigned 打包链路，便于早期试用。
 
