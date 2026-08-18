@@ -8,6 +8,7 @@ Profile bundles: npm packages whose manifest declares `"dsh": { "bundle": { "pat
 |---|---|---|
 | [`base/`](base/README.md) | The shared dsh core every profile applies first | — (patch only) |
 | [`web-app/`](web-app/README.md) | Browser surface: web patch layer + runtime glue plugin | mounts rows |
+| [`desktop-app/`](desktop-app/README.md) | Desktop surface: Web parity plus `ctx.desktop` host affordances | mounts `desktop-app` |
 | [`headless/`](headless/README.md) | Direct one-shot task mode over base, with no Host or Web layer | mounts `headless-runner` |
 | [`tui/`](tui/README.md) | Interactive line-oriented terminal surface over base | mounts `tui-runner` |
 

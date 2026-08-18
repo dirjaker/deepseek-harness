@@ -29,6 +29,24 @@ declare module '@deepseek-ai/cordis' {
 }
 
 export {
+  createProcessShutdown,
+  PROCESS_SHUTDOWN_TIMEOUT_MS,
+  type ProcessShutdown,
+} from './process-shutdown.ts'
+
+export {
+  composeProfileForRun,
+  prepareProfileForRun,
+  PROFILE_ROOT_FILENAME,
+  profileHomePatchPath,
+  resolveTelemetryPatch,
+  runProfile,
+  type ComposeProfileForRunOptions,
+  type PrepareProfileForRunOptions,
+  type RunProfileOptions,
+} from './profile-runner.ts'
+
+export {
   composeEntries,
   DEFAULT_PROFILE_BUNDLES,
   healProfilesModuleFallback,

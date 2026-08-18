@@ -34,6 +34,12 @@ pnpm run build
 pnpm dsh web
 ```
 
+The source checkout also exposes the macOS desktop development host:
+
+```sh
+pnpm desktop:dev
+```
+
 ## Community and support
 
 - Feel free to submit feedback or bug reports through [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions).

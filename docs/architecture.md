@@ -16,13 +16,13 @@ There is no privileged core to patch: you extend dsh by mounting a plugin beside
 
 A running `dsh` is a plugin tree composed at boot from ordered layers.
 
-A **profile** is a named composition stored in the Harness home. It lists the bundles it stacks, holds any out-of-tree plugins it installs, and keeps the user's own `cordis.patch.yml`. `web`, `headless`, and `tui` ship as templates.
+A **profile** is a named composition stored in the Harness home. It lists the bundles it stacks, holds any out-of-tree plugins it installs, and keeps the user's own `cordis.patch.yml`. `desktop`, `web`, `headless`, and `tui` ship as templates.
 
 A **bundle** is a distribution format for Cordis config rows and the code they mount, so whatever it inserts stays patchable by the layers above it.
 
 Each declares itself in its own `package.json` under a `dsh` field: `dsh.profile` lists a profile's bundles, and `dsh.bundle` points at a bundle's patch file.
 
-[`dsh-base`](../packages/bundle/base/README.md) is the first layer of every profile: model adapters, tools, persistence, sandbox and approval policy, settings, credentials, telemetry. [`dsh-web-app`](../packages/bundle/web-app/README.md) adds the browser application; [`dsh-headless`](../packages/bundle/headless/README.md) adds a one-shot runner with no server at all; [`dsh-tui`](../packages/bundle/tui/README.md) adds an interactive line-oriented terminal surface.
+[`dsh-base`](../packages/bundle/base/README.md) is the first layer of every profile: model adapters, tools, persistence, sandbox and approval policy, settings, credentials, telemetry. [`dsh-web-app`](../packages/bundle/web-app/README.md) adds the browser application; [`dsh-desktop-app`](../packages/bundle/desktop-app/README.md) layers desktop host affordances over that Web composition; [`dsh-headless`](../packages/bundle/headless/README.md) adds a one-shot runner with no server at all; [`dsh-tui`](../packages/bundle/tui/README.md) adds an interactive line-oriented terminal surface.
 
 Layers apply to an empty entry list in this order: each bundle in the profile's listed order, then the profile's `cordis.patch.yml`, then the home-level one, then any `--patch` overlay. A patch targets a row by id and replaces its whole config, or inserts new rows.
 
@@ -121,6 +121,7 @@ New behavior attaches to a documented extension point. Changing the loop itself 
 | Add UI or editor integration | drive `ctx.agents` and render from `session/event` |
 | Add a Web Client Chat node | register a `ConversationNodeDefinition` + keyed renderer |
 | Add durable session state | extend `SessionEventMap`; render and replay from the log |
+| Add desktop-only host affordance | register through `ctx.desktop` or its `desktop/*` events |
 | Generate session titles | register the sole `ctx.sessionTitle` provider |
 | Manage a same-session objective | use `ctx.goals`; continue through `agent/*` |
 | Fork a live session | `ctx.sessions.fork(source, boundary?, childSessionId?)` |

@@ -34,6 +34,12 @@ pnpm run build
 pnpm dsh web
 ```
 
+源码 checkout 也提供 macOS 桌面开发宿主：
+
+```sh
+pnpm desktop:dev
+```
+
 ## 社区与支持
 
 - 欢迎通过 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 提交反馈或 bug 报告。

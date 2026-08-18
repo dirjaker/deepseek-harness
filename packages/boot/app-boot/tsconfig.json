@@ -24,7 +24,13 @@
       "path": "../../../vendor/hmr"
     },
     {
+      "path": "../../../vendor/timer"
+    },
+    {
       "path": "../../runtime-diagnostics/invariants"
+    },
+    {
+      "path": "../cmdline"
     },
     {
       "path": "../../core/system-prompt"

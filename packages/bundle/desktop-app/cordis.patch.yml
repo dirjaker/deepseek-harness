@@ -1,0 +1,16 @@
+# Desktop app bundle: reuses the Web app and adds desktop-only host affordances.
+
+- id: webserver
+  config:
+    host: 127.0.0.1
+    port: 0
+
+- id: web-runtime
+  config:
+    printUrl: false
+    surfaceContext: true
+    trustedHosts: !!js ctx.webStartup.trustedHosts
+
+- insert:
+    - id: desktop-app
+      name: '@deepseek-ai/dsh-desktop-app'

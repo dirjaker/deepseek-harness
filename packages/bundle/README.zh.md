@@ -8,6 +8,7 @@ Profile 组合包：在 manifest（元数据清单）中声明 `"dsh": { "bundle
 |---|---|---|
 | [`base/`](base/README.md) | 每个 profile 最先应用的共享 dsh 核心 | —（仅 patch） |
 | [`web-app/`](web-app/README.md) | 浏览器表层：web patch 层 + 运行时粘合插件 | 挂载多条配置行 |
+| [`desktop-app/`](desktop-app/README.md) | 桌面表层：Web 功能一致性 + `ctx.desktop` 宿主能力 | 挂载 `desktop-app` |
 | [`headless/`](headless/README.md) | 直接运行在 base 之上的一次性任务模式，不含 Host 或 Web 层 | 挂载 `headless-runner` |
 | [`tui/`](tui/README.md) | 直接运行在 base 之上的交互式行模式终端表层 | 挂载 `tui-runner` |
 

@@ -16,13 +16,13 @@
 
 运行中的 `dsh` 是一棵插件树，由启动时按序叠加的各层组合而成。
 
-**profile** 是存放在 Harness home 中的具名组装。它列出自己叠放的组合包，存放自己安装的树外插件，并保存用户自己的 `cordis.patch.yml`。`web`、`headless` 和 `tui` 作为模板随发行版交付。
+**profile** 是存放在 Harness home 中的具名组装。它列出自己叠放的组合包，存放自己安装的树外插件，并保存用户自己的 `cordis.patch.yml`。`desktop`、`web`、`headless` 和 `tui` 作为模板随发行版交付。
 
 **组合包**是 Cordis 配置项及其挂载代码的分发格式，因此它插入的内容始终可被其上各层 patch。
 
 两者都在各自的 `package.json` 中通过 `dsh` 字段声明自己：`dsh.profile` 列出一个 profile 的组合包，`dsh.bundle` 指向一个组合包的 patch 文件。
 
-[`dsh-base`](../packages/bundle/base/README.md) 是每个 profile 的第一层：模型适配器、工具、持久化、沙箱与审批策略、设置、凭据、遥测。[`dsh-web-app`](../packages/bundle/web-app/README.md) 增加浏览器应用；[`dsh-headless`](../packages/bundle/headless/README.md) 增加一次性运行器，且完全不带服务器；[`dsh-tui`](../packages/bundle/tui/README.md) 增加交互式行模式终端表层。
+[`dsh-base`](../packages/bundle/base/README.md) 是每个 profile 的第一层：模型适配器、工具、持久化、沙箱与审批策略、设置、凭据、遥测。[`dsh-web-app`](../packages/bundle/web-app/README.md) 增加浏览器应用；[`dsh-desktop-app`](../packages/bundle/desktop-app/README.md) 在该 Web 组合之上叠加桌面宿主能力；[`dsh-headless`](../packages/bundle/headless/README.md) 增加一次性运行器，且完全不带服务器；[`dsh-tui`](../packages/bundle/tui/README.md) 增加交互式行模式终端表层。
 
 各层按此顺序应用在空条目列表之上：先按 profile 列出的顺序应用每个组合包，然后是 profile 的 `cordis.patch.yml`，然后是 home 级的那份，最后是任意 `--patch` overlay。一条 patch 按 id 定位某个条目并替换其整个 config，或插入新条目。
 
@@ -125,6 +125,7 @@ seam 正是替换一个提供方就能改变整个产品的原因。文件系统
 | 添加 UI 或编辑器集成 | 驱动 `ctx.agents` 并从 `session/event` 渲染 |
 | 添加 Web Client Chat 节点 | 注册 `ConversationNodeDefinition` + keyed renderer |
 | 添加持久会话状态 | 扩展 `SessionEventMap`；从日志渲染和回放 |
+| 添加桌面专属宿主能力 | 通过 `ctx.desktop` 或其 `desktop/*` 事件注册 |
 | 生成会话标题 | 注册唯一的 `ctx.sessionTitle` 提供方 |
 | 管理同会话目标 | 使用 `ctx.goals`；通过 `agent/*` 续跑 |
 | fork 活跃会话 | `ctx.sessions.fork(source, boundary?, childSessionId?)` |
