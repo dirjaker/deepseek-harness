@@ -8,6 +8,7 @@
  */
 
 import { Context, Service } from '@deepseek-ai/cordis'
+import type { Branded } from '@deepseek-ai/dsh-brand'
 
 declare module '@deepseek-ai/cordis' {
   interface Context {
@@ -19,23 +20,26 @@ declare module '@deepseek-ai/cordis' {
     /**
      * A desktop menu item was invoked.
      * @param command - Stable command id contributed by a desktop menu plugin.
+     * @mode emit
      */
     'desktop/menu-command'(command: DesktopMenuCommand): void
     /**
      * The host window state changed.
      * @param state - Current window state.
+     * @mode emit
      */
     'desktop/window-state-changed'(state: DesktopWindowState): void
     /**
      * A desktop notification request was accepted by the host provider.
      * @param notification - Redacted notification payload.
+     * @mode emit
      */
     'desktop/notification-requested'(notification: DesktopNotification): void
   }
 }
 
 /** Stable command id delivered when a desktop menu item is selected. */
-export type DesktopCommandId = string & { readonly __brand: 'DesktopCommandId' }
+export type DesktopCommandId = Branded<'DesktopCommandId'>
 
 /** A command emitted from the native app menu. */
 export interface DesktopMenuCommand {

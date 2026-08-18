@@ -1,20 +1,45 @@
-# DeepSeek Harness
+# DeepSeek Harness Desktop Fork
 
 English | [中文](README.zh.md)
 
-DeepSeek Harness (`dsh`) is an open-source agent harness developed by [DeepSeek AI](https://deepseek.com).
+This repository is a downstream desktop-oriented fork of [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness), the open-source agent harness developed by [DeepSeek AI](https://deepseek.com). The fork keeps the official Web and CLI foundation, then adds a macOS Electron desktop host and local unsigned packaging for early testing.
 
-It uses an architecture where **everything is a plugin**, and is powered by [Cordis](https://github.com/cordiverse/cordis), whose design is described in [_A Programming Paradigm for Spatiotemporal Composability_](https://github.com/cordiverse/paper).
+The upstream project uses an architecture where **everything is a plugin**, powered by [Cordis](https://github.com/cordiverse/cordis), whose design is described in [_A Programming Paradigm for Spatiotemporal Composability_](https://github.com/cordiverse/paper). The desktop work follows the same plugin model: desktop capabilities are exposed through `ctx.desktop` instead of importing Electron from product plugins.
 
 ## Developer preview
 
-DeepSeek Harness is currently in _developer preview_ and is iterating rapidly. **THERE WILL BE COMPATIBILITY-BREAKING CHANGES.**
+DeepSeek Harness and this desktop fork are in _developer preview_ and are iterating rapidly. **THERE WILL BE COMPATIBILITY-BREAKING CHANGES.**
 
-## Run
+<a id="run"></a>
 
-### Run from `npm`
+## macOS Desktop
+
+The desktop app boots the `desktop` profile in Electron, starts the existing Web UI on a loopback OS-assigned port, and loads it in a sandboxed BrowserWindow. Web features remain the source of truth; desktop-only menu, notification, window, and packaging behavior lives beside the plugin layer.
+
+First alpha packages are unsigned Apple Silicon builds. macOS may block the first launch until you open the app from Finder with **Open** or allow it in System Settings.
+
+### Download
+
+Download `DeepSeek Harness-macOS-arm64.zip` from the latest `desktop-*` prerelease in this repository's GitHub Releases, unzip it, and move `DeepSeek Harness.app` to Applications.
+
+### Run from source
 
 Install `Node.js`, then run:
+
+```sh
+pnpm install
+pnpm desktop:dev
+```
+
+To create a local unsigned macOS zip:
+
+```sh
+pnpm desktop:pack
+```
+
+## Web and CLI
+
+The upstream Web UI still runs from npm:
 
 ```sh
 npx @deepseek-ai/dsh web
@@ -22,9 +47,7 @@ npx @deepseek-ai/dsh web
 
 The command starts the Web UI, served at `http://127.0.0.1:3080` by default. See [Web UI guide](docs/user/guide/index.md).
 
-### Run from source
-
-To run from a repository checkout:
+To run the Web UI from source:
 
 ```sh
 git clone https://github.com/deepseek-ai/deepseek-harness.git
@@ -34,15 +57,9 @@ pnpm run build
 pnpm dsh web
 ```
 
-The source checkout also exposes the macOS desktop development host:
-
-```sh
-pnpm desktop:dev
-```
-
 ## Community and support
 
-- Feel free to submit feedback or bug reports through [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions).
+- For upstream DeepSeek Harness feedback or bug reports, use [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions).
 - Add the [`dsh-plugin`](https://github.com/topics/dsh-plugin) topic to your plugin repository for discoverability.
 - Join <a href="https://discord.gg/Ycq5dCaS4">DeepSeek Harness Discord community</a>.
 

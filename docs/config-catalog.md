@@ -567,6 +567,61 @@ export interface Config {
 
 Source: [`packages/credentials/credentials-local/src/index.ts:55`](../packages/credentials/credentials-local/src/index.ts)
 
+<a id="deepseek-aidsh-desktop"></a>
+
+## `@deepseek-ai/dsh-desktop`
+
+```ts config-catalog
+/** Handlers used by {@link DesktopService}. */
+export interface DesktopServiceHandlers {
+  /** Called after menu registration changes. */
+  onMenuItemsChanged?: (items: readonly DesktopMenuItem[]) => void
+  /** Called for accepted notifications. */
+  onNotification?: (notification: DesktopNotification) => void
+  /** Window action implementation. */
+  window?: Partial<DesktopWindowActions>
+}
+
+/** One native menu item contributed by a plugin. */
+export interface DesktopMenuItem {
+  /** Stable command id. */
+  id: DesktopCommandId
+  /** User-visible menu label. */
+  label: string
+  /** Optional accelerator in Electron-style notation. */
+  accelerator?: string
+  /** Whether the item is currently enabled. Defaults to true. */
+  enabled?: boolean
+}
+
+/** Redacted desktop notification payload. */
+export interface DesktopNotification {
+  /** Notification title. */
+  title: string
+  /** Optional short body; providers may truncate or drop it. */
+  body?: string
+}
+
+/** Window actions exposed to plugins. */
+export interface DesktopWindowActions {
+  /** Focus and show the main desktop window. */
+  focus(): void
+  /** Minimize the main desktop window. */
+  minimize(): void
+  /** Toggle the developer tools for the main window. */
+  toggleDevTools(): void
+  /** Request the app to navigate to its settings affordance. */
+  showSettings(): void
+}
+
+/** Stable command id delivered when a desktop menu item is selected. */
+export type DesktopCommandId = Branded<'DesktopCommandId'>
+```
+
+Depends on: [`Branded`](../packages/util/brand/src/index.ts)
+
+Source: [`packages/desktop/desktop/src/index.ts:132`](../packages/desktop/desktop/src/index.ts)
+
 <a id="deepseek-aidsh-e2b"></a>
 
 ## `@deepseek-ai/dsh-e2b`
@@ -2796,6 +2851,24 @@ export type ToolPresentationMode = 'native' | 'code' | 'both'
 
 Source: [`packages/core/tools/src/index.ts:654`](../packages/core/tools/src/index.ts)
 
+<a id="deepseek-aidsh-tui"></a>
+
+## `@deepseek-ai/dsh-tui`
+
+Requires: `agentDefaultModel` · `agents` · `sessions`
+
+```ts config-catalog
+/** Plugin config resolved from the app's command-line provider service. */
+export interface Config {
+  /** Prompt printed before each user input line. */
+  prompt: string
+  /** Optional first task submitted before the input loop begins. */
+  initialTask?: string
+}
+```
+
+Source: [`packages/bundle/tui/src/index.ts:30`](../packages/bundle/tui/src/index.ts)
+
 <a id="deepseek-aidsh-typert-loader"></a>
 
 ## `@deepseek-ai/dsh-typert-loader`
@@ -3065,6 +3138,7 @@ These load from a `cordis.yml` entry with no `config:` block; they declare no co
 - `@deepseek-ai/dsh-command-goal` — requires `commands` · `goals` ([`packages/goal/command-goal/src/index.ts`](../packages/goal/command-goal/src/index.ts))
 - `@deepseek-ai/dsh-commands` ([`packages/interaction/commands/src/index.ts`](../packages/interaction/commands/src/index.ts))
 - `@deepseek-ai/dsh-cordis-client-runner` ([`packages/extensions/cordis-client-runner/src/index.ts`](../packages/extensions/cordis-client-runner/src/index.ts))
+- `@deepseek-ai/dsh-desktop-app` — requires `desktop` · `webServer` ([`packages/bundle/desktop-app/src/index.ts`](../packages/bundle/desktop-app/src/index.ts))
 - `@deepseek-ai/dsh-fs-e2b` — requires `e2b` ([`packages/e2b/fs-e2b/src/index.ts`](../packages/e2b/fs-e2b/src/index.ts))
 - `@deepseek-ai/dsh-fs-observation-policy` ([`packages/fs/fs-observation-policy/src/index.ts`](../packages/fs/fs-observation-policy/src/index.ts))
 - `@deepseek-ai/dsh-goal-round-driver` — requires `agents` · `goals` · `sessions` ([`packages/goal/goal-round-driver/src/index.ts`](../packages/goal/goal-round-driver/src/index.ts))

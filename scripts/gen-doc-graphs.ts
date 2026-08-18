@@ -180,6 +180,15 @@ const SERVICE_ROLES: ServiceRole[] = [
     note: 'Plugins register namespace schemas and resolve layered values; providers store the raw document. The LLM adapters register their entry config as the composition base under the user section; the web gateway serves redacted layered descriptors and writes the user layer.',
   },
   {
+    key: 'desktop',
+    pkg: 'desktop',
+    title: 'Desktop host capability',
+    mode: 'seam',
+    implementations: ['desktop-app-host'],
+    consumers: ['desktop-app'],
+    note: 'Desktop app hosts provide native menus, redacted notifications, and window actions through ctx.desktop; bundle plugins consume the service without importing Electron.',
+  },
+  {
     key: 'credentials',
     pkg: 'credentials',
     title: 'Credential seam',

@@ -10,7 +10,21 @@ Electron desktop host for DeepSeek Harness. The app boots the `desktop` profile 
 pnpm desktop:dev
 ```
 
-The first development target does not sign, notarize, or package a `.app`. It starts a local Electron window and uses the same `$DSH_HOME` credentials, settings, profiles, sessions, and plugin patch layers as the CLI.
+The development host starts a local Electron window and uses the same `$DSH_HOME` credentials, settings, profiles, sessions, and plugin patch layers as the CLI.
+
+Run the deterministic desktop smoke before packaging:
+
+```sh
+pnpm desktop:smoke
+```
+
+## Packaging
+
+```sh
+pnpm desktop:pack
+```
+
+The pack command produces `dist/desktop/DeepSeek Harness-macOS-arm64.zip`. The first package target is an unsigned Apple Silicon `.app` archive; signing, notarization, `.dmg` layout, auto-update, and universal binaries are deferred. macOS may require opening the app from Finder with **Open** or allowing it in System Settings on first launch.
 
 ## Model Experience
 
@@ -22,4 +36,4 @@ None; this app neither assembles nor sends a provider request.
 
 ## Known Limitations and Deferred Work
 
-- **No release packaging** — the development app runs from source; signing, notarization, auto-update, and distributable archives are intentionally outside this first target.
+- **Unsigned local packaging** — the first release archive is a macOS arm64 `.app.zip`; signing, notarization, auto-update, `.dmg`, and universal binaries are deferred.

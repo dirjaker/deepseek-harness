@@ -17,7 +17,8 @@
   "scripts": {
     "build": "tsc -b && tsdown",
     "dev": "pnpm run build && env -u ELECTRON_RUN_AS_NODE NODE_OPTIONS='--import tsx/esm' electron .",
-    "smoke": "DSH_DESKTOP_SMOKE=1 pnpm run build && env -u ELECTRON_RUN_AS_NODE NODE_OPTIONS='--import tsx/esm' electron ."
+    "smoke": "pnpm run build && env -u ELECTRON_RUN_AS_NODE DSH_DESKTOP_SMOKE=1 NODE_OPTIONS='--import tsx/esm' electron .",
+    "pack": "tsx ../../scripts/pack-desktop.ts"
   },
   "license": "MIT",
   "dependencies": {

@@ -142,6 +142,7 @@
     "dev:web": "tsx scripts/dev-web.ts --poll",
     "desktop:dev": "pnpm --filter @deepseek-ai/dsh-desktop-app-host run dev",
     "desktop:smoke": "pnpm --filter @deepseek-ai/dsh-desktop-app-host run smoke",
+    "desktop:pack": "tsx scripts/pack-desktop.ts",
     "postinstall": "node scripts/install-lefthook.mjs"
   },
   "devDependencies": {

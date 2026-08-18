@@ -532,6 +532,33 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
     ],
   },
   {
+    key: 'desktop',
+    summary: 'Complete desktop host capability.',
+    description: 'Complete desktop host capability.',
+    methods: [
+      {
+        signature: 'menu: DesktopMenuRegistry',
+        description: 'Native menu registration API.',
+        parameters: [],
+      },
+      {
+        signature: 'notifications: DesktopNotifications',
+        description: 'System notification API.',
+        parameters: [],
+      },
+      {
+        signature: 'window: DesktopWindowActions',
+        description: 'Main-window action API.',
+        parameters: [],
+      },
+      {
+        signature: 'capabilities: DesktopCapabilities',
+        description: 'Provider capability facts.',
+        parameters: [],
+      },
+    ],
+  },
+  {
     key: 'directoryPicker',
     summary: 'Abstract directory-picking service.',
     description: 'Abstract directory-picking service. Subclass, implement `capability()`, and load the subclass as a plugin — it registers as `ctx.directoryPicker` (one implementation per context; loading a second throws, cordis\' standard duplicate-service behavior). The capability object must be stable for the service lifetime: consumers may capture it across calls.',
@@ -2348,6 +2375,30 @@ export const EVENT_API: readonly EventApiEntry[] = [
     parameters: [{ name: 'ref', description: 'the reference whose stored value changed.' }],
   },
   {
+    name: 'desktop/menu-command',
+    mode: 'emit',
+    signature: '\'desktop/menu-command\'(command: DesktopMenuCommand): void',
+    summary: 'A desktop menu item was invoked.',
+    description: 'A desktop menu item was invoked.',
+    parameters: [{ name: 'command', description: 'Stable command id contributed by a desktop menu plugin.' }],
+  },
+  {
+    name: 'desktop/notification-requested',
+    mode: 'emit',
+    signature: '\'desktop/notification-requested\'(notification: DesktopNotification): void',
+    summary: 'A desktop notification request was accepted by the host provider.',
+    description: 'A desktop notification request was accepted by the host provider.',
+    parameters: [{ name: 'notification', description: 'Redacted notification payload.' }],
+  },
+  {
+    name: 'desktop/window-state-changed',
+    mode: 'emit',
+    signature: '\'desktop/window-state-changed\'(state: DesktopWindowState): void',
+    summary: 'The host window state changed.',
+    description: 'The host window state changed.',
+    parameters: [{ name: 'state', description: 'Current window state.' }],
+  },
+  {
     name: 'domain/changed',
     mode: 'emit',
     signature: '\'domain/changed\'(change: DomainChanged): void',
@@ -2926,6 +2977,42 @@ export const TYPE_API: readonly TypeApiEntry[] = [
   {
     name: 'CredentialRef',
     declaration: 'export type CredentialRef = Branded<\'CredentialRef\'>;',
+  },
+  {
+    name: 'DesktopCapabilities',
+    declaration: 'export interface DesktopCapabilities {\n    menu: boolean;\n    notifications: boolean;\n    window: boolean;\n}',
+  },
+  {
+    name: 'DesktopCommandId',
+    declaration: 'export type DesktopCommandId = Branded<\'DesktopCommandId\'>;',
+  },
+  {
+    name: 'DesktopMenuCommand',
+    declaration: 'export interface DesktopMenuCommand {\n    id: DesktopCommandId;\n}',
+  },
+  {
+    name: 'DesktopMenuItem',
+    declaration: 'export interface DesktopMenuItem {\n    id: DesktopCommandId;\n    label: string;\n    accelerator?: string;\n    enabled?: boolean;\n}',
+  },
+  {
+    name: 'DesktopMenuRegistry',
+    declaration: 'export interface DesktopMenuRegistry {\n    register(item: DesktopMenuItem): () => void;\n}',
+  },
+  {
+    name: 'DesktopNotification',
+    declaration: 'export interface DesktopNotification {\n    title: string;\n    body?: string;\n}',
+  },
+  {
+    name: 'DesktopNotifications',
+    declaration: 'export interface DesktopNotifications {\n    notify(notification: DesktopNotification): void;\n}',
+  },
+  {
+    name: 'DesktopWindowActions',
+    declaration: 'export interface DesktopWindowActions {\n    focus(): void;\n    minimize(): void;\n    toggleDevTools(): void;\n    showSettings(): void;\n}',
+  },
+  {
+    name: 'DesktopWindowState',
+    declaration: 'export interface DesktopWindowState {\n    focused: boolean;\n    minimized: boolean;\n}',
   },
   {
     name: 'DiffCallView',

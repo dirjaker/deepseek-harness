@@ -5,6 +5,7 @@
 
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { existsSync } from 'node:fs'
 import electron, { type BrowserWindow as BrowserWindowType, type NativeImage, type MenuItemConstructorOptions } from 'electron'
 import { DesktopService, type DesktopMenuItem } from '@deepseek-ai/dsh-desktop'
 import { loadLayeredEnv, runProfile } from '@deepseek-ai/dsh-app-boot'
@@ -16,15 +17,19 @@ const { app, BrowserWindow, Menu, Notification, shell } = electron
 const NAME = 'dsh-desktop'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const INSTALL_ANCHOR = fileURLToPath(new URL('../package.json', import.meta.url))
-const SHIPPED_PRESET_ROOT = fileURLToPath(new URL('../../cli/config/agent-presets/', import.meta.url))
+const PACKAGED_PRESET_ROOT = fileURLToPath(new URL('../config/agent-presets/', import.meta.url))
+const SOURCE_PRESET_ROOT = fileURLToPath(new URL('../../cli/config/agent-presets/', import.meta.url))
+const SHIPPED_PRESET_ROOT = existsSync(PACKAGED_PRESET_ROOT) ? PACKAGED_PRESET_ROOT : SOURCE_PRESET_ROOT
 const PRELOAD = join(__dirname, 'preload.js')
 const ICON = fileURLToPath(new URL('../assets/icon.png', import.meta.url))
+const SMOKE = process.env.DSH_DESKTOP_SMOKE === '1'
+const SMOKE_TIMEOUT_MS = 30_000
 
 let mainWindow: BrowserWindowType | undefined
 let rootContext: Context | undefined
 let desktopService: DesktopService | undefined
 let quitting = false
-let smokeQuitScheduled = false
+let smokeFinished = false
 let appIcon: NativeImage | undefined
 
 function toElectronMenuItem(item: DesktopMenuItem): MenuItemConstructorOptions {
@@ -125,18 +130,13 @@ function createMainWindow(url: string): BrowserWindowType {
       preload: PRELOAD,
     },
   })
-  const scheduleSmokeQuit = (): void => {
-    if (process.env.DSH_DESKTOP_SMOKE === '1') {
-      if (smokeQuitScheduled) return
-      smokeQuitScheduled = true
-      setTimeout(() => { void app.quit() }, 500)
-    }
-  }
   window.once('ready-to-show', () => {
     window.show()
-    scheduleSmokeQuit()
   })
-  window.webContents.once('did-finish-load', scheduleSmokeQuit)
+  window.webContents.once('did-finish-load', () => { finishSmoke(0) })
+  window.webContents.once('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
+    finishSmoke(1, `failed to load ${validatedURL}: ${String(errorCode)} ${errorDescription}`)
+  })
   window.on('focus', () => { desktopService?.updateWindowState({ focused: true, minimized: window.isMinimized() }) })
   window.on('blur', () => { desktopService?.updateWindowState({ focused: false, minimized: window.isMinimized() }) })
   window.on('minimize', () => { desktopService?.updateWindowState({ focused: window.isFocused(), minimized: true }) })
@@ -145,8 +145,22 @@ function createMainWindow(url: string): BrowserWindowType {
     void shell.openExternal(target)
     return { action: 'deny' }
   })
-  void window.loadURL(url)
+  window.loadURL(url).catch((error: unknown) => {
+    finishSmoke(1, `loadURL failed: ${String(error)}`)
+  })
   return window
+}
+
+function finishSmoke(code: number, reason?: string): void {
+  if (!SMOKE) return
+  if (smokeFinished) return
+  smokeFinished = true
+  if (reason !== undefined) console.error(`dsh-desktop smoke: ${reason}`)
+  const forceExit = setTimeout(() => { app.exit(code) }, 1_000)
+  Promise.resolve(rootContext?.fiber.dispose()).finally(() => {
+    clearTimeout(forceExit)
+    app.exit(code)
+  })
 }
 
 async function bootDesktop(): Promise<void> {
@@ -181,6 +195,11 @@ function installAppIcon(): void {
 app.name = 'DeepSeek Harness'
 
 app.whenReady().then(async () => {
+  if (SMOKE) {
+    setTimeout(() => {
+      finishSmoke(1, `timed out after ${String(SMOKE_TIMEOUT_MS)}ms`)
+    }, SMOKE_TIMEOUT_MS)
+  }
   installAppIcon()
   await bootDesktop()
   app.on('activate', () => {

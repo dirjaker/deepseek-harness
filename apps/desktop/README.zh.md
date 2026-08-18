@@ -10,7 +10,21 @@ DeepSeek Harness 的 Electron 桌面宿主。应用在 Electron main 进程中�
 pnpm desktop:dev
 ```
 
-第一版开发目标不签名、不公证，也不打包 `.app`。它会启动一个本地 Electron 窗口，并使用与 CLI 相同的 `$DSH_HOME` 凭据、设置、profile、session 和插件 patch 层。
+开发宿主会启动一个本地 Electron 窗口，并使用与 CLI 相同的 `$DSH_HOME` 凭据、设置、profile、session 和插件 patch 层。
+
+打包前运行确定性的桌面 smoke：
+
+```sh
+pnpm desktop:smoke
+```
+
+## Packaging
+
+```sh
+pnpm desktop:pack
+```
+
+打包命令会产出 `dist/desktop/DeepSeek Harness-macOS-arm64.zip`。第一版打包目标是 unsigned Apple Silicon `.app` 归档；签名、公证、`.dmg` 布局、自动更新和 universal binary 暂缓。macOS 首次打开时可能需要在 Finder 中右键选择**打开**，或到系统设置中允许。
 
 ## Model Experience
 
@@ -22,4 +36,4 @@ None; this app neither assembles nor sends a provider request.
 
 ## Known Limitations and Deferred Work
 
-- **没有发布打包** — 开发应用从源码运行；签名、公证、自动更新和可分发归档不属于第一版目标。
+- **本地 unsigned 打包** — 第一版发布归档是 macOS arm64 `.app.zip`；签名、公证、自动更新、`.dmg` 和 universal binary 暂缓。
