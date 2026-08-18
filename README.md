@@ -1,6 +1,6 @@
 # DeepSeek Harness Desktop Fork
 
-[English](README.en.md) | 中文 | [中文副本](README.zh.md)
+[English](README.en.md) | 中文 | [兼容路径](README.zh.md)
 
 本仓库是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的桌面端二开版本。官方项目由 [DeepSeek AI](https://deepseek.com) 开发，是一个开源 agent harness（智能体框架）；本 fork 保留官方 Web 与 CLI 基础，并加入 macOS Electron 桌面宿主和本地 unsigned 打包链路，便于早期试用。
 
@@ -58,29 +58,6 @@ pnpm install
 pnpm run build
 pnpm dsh web
 ```
-
-## 社区与支持
-
-- 官方 DeepSeek Harness 的反馈或 bug 报告请提交到 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions)。
-- 为你的插件仓库添加 [`dsh-plugin`](https://github.com/topics/dsh-plugin) 话题，便于被发现。
-- 欢迎加入 DeepSeek Harness 企微群：扫码添加企微小助手并填写入群问卷，完成后小助手会邀请你入群。
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">企微小助手</th>
-      <th align="center">入群问卷</th>
-      <th align="center">微信公众号</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><img src="assets/community-wecom-assistant.png" alt="DeepSeek Harness 企微小助手二维码" width="180" height="180"></td>
-      <td align="center"><a href="https://trtgsjkv6r.feishu.cn/share/base/form/shrcnIt5twSVdLGD52KJBckGCgg"><img src="assets/community-wecom-survey.png" alt="DeepSeek Harness 入群问卷二维码" width="180" height="180"></a></td>
-      <td align="center"><img src="assets/community-wechat-official-account.png" alt="DeepSeek Harness 团队微信公众号二维码" width="180" height="180"></td>
-    </tr>
-  </tbody>
-</table>
 
 ## 参与贡献
 
